@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { Canvas, T } from '@threlte/core';
 	import { Text3DGeometry, Suspense } from '@threlte/extras';
+	import fragmentShader from './fragment.glsl?raw';
+	import vertexShader from './vertex.glsl?raw';
 </script>
 
 <Canvas size={{ width: 1200, height: 1200 }}>
@@ -9,7 +11,7 @@
 		near={-2000}
 		far={2000}
 		zoom={120}
-		position={[-20, 10, 100]}
+		position={[-20, 8, 100]}
 		on:create={({ ref }) => {
 			ref.lookAt(0, 0, 0);
 		}}
@@ -19,15 +21,39 @@
 		<T.DirectionalLight intensity={0.5} position={[5, 200, 500]} />
 		<T.Mesh position={[0, 1.5, -500]}>
 			<Text3DGeometry text={'Web'} size={1} depth={500} />
-			<T.MeshStandardMaterial />
+			<T.ShaderMaterial
+				{fragmentShader}
+				{vertexShader}
+				uniforms={{
+					color: {
+						value: [0, 1, 0]
+					}
+				}}
+			/>
 		</T.Mesh>
 		<T.Mesh position={[-2, 0.5, -500]}>
 			<Text3DGeometry text={'for'} size={1} depth={500} />
-			<T.MeshStandardMaterial />
+			<T.ShaderMaterial
+				{fragmentShader}
+				{vertexShader}
+				uniforms={{
+					color: {
+						value: [0, 0, 1]
+					}
+				}}
+			/>
 		</T.Mesh>
 		<T.Mesh position={[0, 0.5, -500]}>
 			<Text3DGeometry text={'Humans'} size={1} depth={500} />
-			<T.MeshStandardMaterial />
+			<T.ShaderMaterial
+				{fragmentShader}
+				{vertexShader}
+				uniforms={{
+					color: {
+						value: [1, 0, 0]
+					}
+				}}
+			/>
 		</T.Mesh>
 	</Suspense>
 </Canvas>
