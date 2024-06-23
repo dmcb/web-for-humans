@@ -1,14 +1,14 @@
 <script lang="ts">
-	import Logo from '$lib/logo.svelte';
+	import Scene from '$lib/scene.svelte';
 </script>
 
 <main>
-	<Logo />
-	<h1>
+	<Scene />
+	<!-- <h1>
 		<span>Web</span>
 		<span><em>for</em> Humans</span>
 	</h1>
-	<p>Coming soon.</p>
+	<p>Coming soon.</p> -->
 </main>
 
 <style lang="scss">
