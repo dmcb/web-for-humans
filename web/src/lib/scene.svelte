@@ -3,7 +3,7 @@
 	import Logo from '$lib/components/logo.svelte';
 </script>
 
-<Canvas size={{ width: 1200, height: 1200 }}>
+<Canvas size={{ width: 1200, height: 800 }}>
 	<!-- <T.AmbientLight intensity={1} /> -->
 	<!-- <T.DirectionalLight intensity={0.5} position={[5, 200, 500]} /> -->
 	<T.OrthographicCamera
@@ -13,7 +13,7 @@
 		zoom={120}
 		position={[-30, -17, 100]}
 		on:create={({ ref }) => {
-			ref.lookAt(0.5, -1, 0);
+			ref.lookAt(0.9, 0, 0);
 		}}
 	/>
 	<Logo />
@@ -26,7 +26,7 @@
 		object-fit: cover;
 		top: 0;
 		left: 0;
-		width: 50vw !important;
-		height: 50vw !important;
+		width: min(100vw, 100vh) !important;
+		height: min(100vw, 100vh) !important;
 	}
 </style>
