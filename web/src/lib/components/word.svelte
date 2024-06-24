@@ -5,9 +5,10 @@
 	import { cubicOut } from 'svelte/easing';
 	import Letter from '$lib/components/letter.svelte';
 
-	export let delay: number = 0;
 	export let text: [string, number, [number, number, number]][];
 	export let position: [number, number] = [0, 0];
+	export let font: any;
+	export let delay: number = 0;
 
 	const raise = spring(0, {
 		stiffness: 0.05,
@@ -36,6 +37,6 @@
 	}}
 >
 	{#each text as [letter, offset, color], i}
-		<Letter {letter} {offset} {color} />
+		<Letter {letter} {offset} {color} {font} />
 	{/each}
 </T.Group>

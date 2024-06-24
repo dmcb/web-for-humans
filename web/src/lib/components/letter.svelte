@@ -7,10 +7,11 @@
 	export let letter: string = 'A';
 	export let offset: number = 0;
 	export let color: [number, number, number] = [0, 1, 0];
+	export let font: any;
 </script>
 
 <T.Mesh position={[offset, 0, 0]}>
-	<Text3DGeometry text={letter} size={1} depth={500} />
+	<Text3DGeometry text={letter} size={1} depth={500} {font} />
 	<T.ShaderMaterial
 		{fragmentShader}
 		{vertexShader}

@@ -28,6 +28,5 @@
 		left: 0;
 		width: 50vw !important;
 		height: 50vw !important;
-		background-color: beige;
 	}
 </style>

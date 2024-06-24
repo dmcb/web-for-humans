@@ -17,6 +17,7 @@
 		font-family: 'IBM Plex Sans', sans-serif;
 		font-weight: 400;
 		font-style: normal;
+		background-color: beige;
 	}
 
 	:global(body) {
