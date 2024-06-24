@@ -34,9 +34,9 @@
 			['o', 0.4, green],
 			['r', 0.9, yellow]
 		]}
-		position={[-1.7, 0.5]}
+		position={[-1.5, 0.5]}
 		font={accentFont}
-		delay={200}
+		delay={250}
 	/>
 	<Word
 		text={[
@@ -47,8 +47,8 @@
 			['N', 2.7, yellow],
 			['S', 3.4, orange]
 		]}
-		position={[0, 0.5]}
+		position={[0.15, 0.5]}
 		{font}
-		delay={700}
+		delay={800}
 	/>
 </Suspense>

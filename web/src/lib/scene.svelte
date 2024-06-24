@@ -13,7 +13,7 @@
 		zoom={120}
 		position={[-30, -17, 100]}
 		on:create={({ ref }) => {
-			ref.lookAt(0.9, 0, 0);
+			ref.lookAt(1.1, 0, 0);
 		}}
 	/>
 	<Logo />
@@ -26,7 +26,7 @@
 		object-fit: cover;
 		top: 0;
 		left: 0;
-		width: min(100vw, 100vh) !important;
-		height: min(100vw, 100vh) !important;
+		width: 100vw !important;
+		height: 100vw !important;
 	}
 </style>
