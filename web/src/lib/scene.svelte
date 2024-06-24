@@ -11,9 +11,9 @@
 		near={-2000}
 		far={2000}
 		zoom={120}
-		position={[-20, 8, 100]}
+		position={[-20, -12, 100]}
 		on:create={({ ref }) => {
-			ref.lookAt(0, 0, 0);
+			ref.lookAt(0, -1, 0);
 		}}
 	/>
 	<Logo />

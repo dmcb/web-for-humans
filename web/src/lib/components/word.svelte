@@ -27,7 +27,7 @@
 </script>
 
 <T.Group
-	position={[0, 0, $depth + $raise]}
+	position={[position[0], position[1], $depth + $raise]}
 	on:pointerover={(e) => {
 		e.stopPropagation();
 		raise.set(0.7);
@@ -37,7 +37,7 @@
 		raise.set(0);
 	}}
 >
-	<T.Mesh {position}>
+	<T.Mesh>
 		<Text3DGeometry {text} size={1} depth={500} />
 		<T.ShaderMaterial
 			{fragmentShader}
