@@ -12,7 +12,7 @@
 	export let color: [number, number, number] = [0, 1, 0];
 
 	const raise = spring(0, {
-		stiffness: 0.09,
+		stiffness: 0.05,
 		damping: 0.2
 	});
 	const depth = tweened(-550, {
@@ -30,7 +30,7 @@
 	position={[position[0], position[1], $depth + $raise]}
 	on:pointerover={(e) => {
 		e.stopPropagation();
-		raise.set(0.7);
+		raise.set(1);
 	}}
 	on:pointerout={(e) => {
 		e.stopPropagation();
