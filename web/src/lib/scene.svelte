@@ -4,8 +4,8 @@
 </script>
 
 <Canvas size={{ width: 1200, height: 1200 }}>
-	<T.AmbientLight intensity={0.2} />
-	<T.DirectionalLight intensity={0.5} position={[5, 200, 500]} />
+	<!-- <T.AmbientLight intensity={1} /> -->
+	<!-- <T.DirectionalLight intensity={0.5} position={[5, 200, 500]} /> -->
 	<T.OrthographicCamera
 		makeDefault
 		near={-2000}
