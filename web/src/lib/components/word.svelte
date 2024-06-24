@@ -3,28 +3,38 @@
 	import { Text3DGeometry, onReveal } from '@threlte/extras';
 	import fragmentShader from '$lib/shaders/fragment.glsl?raw';
 	import vertexShader from '$lib/shaders/vertex.glsl?raw';
-	import { spring } from 'svelte/motion';
+	import { spring, tweened } from 'svelte/motion';
+	import { cubicOut } from 'svelte/easing';
 
+	export let delay: number = 0;
 	export let text: string = '';
-	export let position: [number, number, number] = [0, 0, 0];
+	export let position: [number, number] = [0, 0];
 	export let color: [number, number, number] = [0, 1, 0];
 
-	const depth = spring(0);
+	const raise = spring(0, {
+		stiffness: 0.09,
+		damping: 0.2
+	});
+	const depth = tweened(-550, {
+		delay: delay,
+		duration: 600,
+		easing: cubicOut
+	});
 
 	onReveal(() => {
-		console.log('The component has been revealed');
+		depth.set(-500);
 	});
 </script>
 
 <T.Group
-	position={[0, 0, $depth]}
+	position={[0, 0, $depth + $raise]}
 	on:pointerover={(e) => {
 		e.stopPropagation();
-		depth.set(1);
+		raise.set(0.7);
 	}}
 	on:pointerout={(e) => {
 		e.stopPropagation();
-		depth.set(0);
+		raise.set(0);
 	}}
 >
 	<T.Mesh {position}>
@@ -40,4 +50,3 @@
 		/>
 	</T.Mesh>
 </T.Group>
-<!-- </Suspense> -->
