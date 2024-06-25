@@ -9,13 +9,13 @@
 	let font = useLoader(FontLoader).load('/fonts/Barlow_Condensed_Bold.json');
 	let accentFont = useLoader(FontLoader).load('/fonts/Crimson_Text_SemiBold_Italic.json');
 
-	let red: [number, number, number] = [0.8, 0.149, 0.09];
-	let orange: [number, number, number] = [0.925, 0.411, 0.157];
-	let yellow: [number, number, number] = [0.937, 0.8, 0.416];
-	let green: [number, number, number] = [0.733, 0.764, 0.234];
-	let turquoise: [number, number, number] = [0.262, 0.67, 0.6];
-	let blue: [number, number, number] = [0.266, 0.647, 0.901];
-	let fuschia: [number, number, number] = [0.78, 0.02, 0.34];
+	let red: [number, number, number] = [0.99, 0.119, 0.09];
+	let orange: [number, number, number] = [0.985, 0.411, 0];
+	let yellow: [number, number, number] = [0.987, 0.72, 0];
+	let green: [number, number, number] = [0.633, 0.744, 0];
+	let turquoise: [number, number, number] = [0, 0.67, 0.6];
+	let blue: [number, number, number] = [0, 0.647, 0.951];
+	let fuschia: [number, number, number] = [0.94, 0, 0.34];
 </script>
 
 <Suspense>
@@ -32,7 +32,7 @@
 		text={[
 			['f', 0, fuschia],
 			['o', 0.4, green],
-			['r', 0.9, yellow]
+			['r', 0.95, yellow]
 		]}
 		position={[-1.5, 0.5]}
 		font={accentFont}
@@ -43,11 +43,11 @@
 			['H', 0, turquoise],
 			['U', 0.65, green],
 			['M', 1.3, fuschia],
-			['A', 2.05, blue],
-			['N', 2.7, yellow],
-			['S', 3.4, orange]
+			['A', 2.05, yellow],
+			['N', 2.7, blue],
+			['S', 3.4, red]
 		]}
-		position={[0.15, 0.5]}
+		position={[0.157, 0.5]}
 		{font}
 		delay={800}
 	/>
