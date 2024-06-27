@@ -13,7 +13,7 @@
 		zoom={120}
 		position={[-30, -17, 100]}
 		on:create={({ ref }) => {
-			ref.lookAt(1.1, 0, 0);
+			ref.lookAt(1.1, -0.4, 0);
 		}}
 	/>
 	<Logo />
@@ -28,5 +28,14 @@
 		left: 0;
 		width: 100vw !important;
 		height: 100vw !important;
+		max-width: 1200px;
+		max-height: 800px;
+
+		@media (min-width: 1200px) {
+			width: 100vw !important;
+			height: 66.66vw !important;
+			max-width: none;
+			max-height: none;
+		}
 	}
 </style>

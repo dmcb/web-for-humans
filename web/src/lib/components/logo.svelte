@@ -12,7 +12,7 @@
 	let red: [number, number, number] = [0.99, 0.119, 0.09];
 	let orange: [number, number, number] = [0.985, 0.411, 0];
 	let yellow: [number, number, number] = [0.987, 0.72, 0];
-	let green: [number, number, number] = [0.633, 0.744, 0];
+	let green: [number, number, number] = [0.583, 0.704, 0];
 	let turquoise: [number, number, number] = [0, 0.67, 0.6];
 	let blue: [number, number, number] = [0, 0.647, 0.951];
 	let fuschia: [number, number, number] = [0.94, 0, 0.34];
