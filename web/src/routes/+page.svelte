@@ -94,7 +94,7 @@
 		transition: background-color 0.2s;
 
 		&:hover {
-			background-color: #3b877a;
+			background-color: #9fe9e0;
 		}
 	}
 </style>
