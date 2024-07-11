@@ -9,7 +9,7 @@
 		content="Website strategy, design, development and launch consulting, for humans."
 	/>
 	<meta property="og:type" content="website" />
-	<meta property="og:image" content="https://webforhumans.digital/webforhumans.png" />
+	<meta property="og:image" content="https://webforhumans.solutions/webforhumans.png" />
 	<meta property="og:image:width" content="1200" />
 	<meta property="og:image:height" content="630" />
 </svelte:head>
@@ -19,7 +19,8 @@
 	<h1>Web For Humans</h1>
 	<section class="introduction">
 		<h2>Your partner for making great things on the web.</h2>
-		<p>Coming soon.</p>
+		<p>Website strategy, design, development and launch consulting, for humans.</p>
+		<a href="https://calendly.com/webforhumans/consultation">Book a consultation</a>
 	</section>
 </main>
 
@@ -78,5 +79,22 @@
 		position: absolute;
 		transform: translate(-120%, 0);
 		font-size: 0.6em;
+	}
+
+	a {
+		display: block;
+		margin-top: 2rem;
+		text-align: center;
+		text-decoration: none;
+		color: #000;
+		font-family: 'IBM Plex Sans', sans-serif;
+		background-color: #54b9ad;
+		padding: 0.5rem;
+		border-radius: 0.5rem;
+		transition: background-color 0.2s;
+
+		&:hover {
+			background-color: #3b877a;
+		}
 	}
 </style>
