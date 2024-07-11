@@ -41,6 +41,9 @@
 
 	section.introduction {
 		margin-top: calc(min(70vw, 560px));
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
 		margin-left: auto;
 		margin-right: auto;
 		padding-left: 1rem;
@@ -69,10 +72,15 @@
 		font-weight: 300;
 		font-size: 1.2rem;
 		line-height: 1;
+		margin-top: 0;
 
 		@media (min-width: 320px) {
 			font-size: 1.5rem;
 		}
+	}
+
+	p {
+		margin-top: 0;
 	}
 
 	em {
@@ -82,14 +90,13 @@
 	}
 
 	a {
-		display: block;
-		margin-top: 2rem;
+		margin-top: 1rem;
 		text-align: center;
 		text-decoration: none;
 		color: #000;
 		font-family: 'IBM Plex Sans', sans-serif;
 		background-color: #54b9ad;
-		padding: 0.5rem;
+		padding: 0.5rem 0.75rem;
 		border-radius: 0.5rem;
 		transition: background-color 0.2s;
 
