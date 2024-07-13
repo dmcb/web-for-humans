@@ -95,13 +95,13 @@
 		text-decoration: none;
 		color: #000;
 		font-family: 'IBM Plex Sans', sans-serif;
-		background-color: #54b9ad;
+		background-color: #51b4ef;
 		padding: 0.5rem 0.75rem;
 		border-radius: 0.5rem;
-		transition: background-color 0.2s;
+		transition: transform 0.2s;
 
 		&:hover {
-			background-color: #9fe9e0;
+			transform: scale(1.05);
 		}
 	}
 </style>
