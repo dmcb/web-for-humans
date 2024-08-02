@@ -98,10 +98,19 @@
 		background-color: #51b4ef;
 		padding: 0.5rem 0.75rem;
 		border-radius: 0.5rem;
-		transition: transform 0.2s;
+		transition:
+			transform 0.2s,
+			outline-offset 0.2s;
+		outline: 0.2rem solid #51b4ef;
+		outline-offset: -0.2rem;
+		outline-style: dashed;
 
 		&:hover {
 			transform: scale(1.05);
+		}
+
+		&:focus {
+			outline-offset: 0.2rem;
 		}
 	}
 </style>
