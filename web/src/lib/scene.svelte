@@ -23,11 +23,11 @@
 
 <style lang="scss">
 	:global(div) {
-		position: static !important;
+		position: absolute !important;
+		top: 0;
 	}
 	:global(canvas) {
 		z-index: -1;
-		position: absolute !important;
 		object-fit: cover;
 		top: 0;
 		left: 0;
