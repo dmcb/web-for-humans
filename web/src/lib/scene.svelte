@@ -13,7 +13,7 @@
 			far={2000}
 			zoom={120}
 			position={[-30, -17, 100]}
-			on:create={({ ref }) => {
+			oncreate={(ref) => {
 				ref.lookAt(1.1, -0.4, 0);
 			}}
 		/>
