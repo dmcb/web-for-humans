@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { useLoader } from '@threlte/core';
 	import { Suspense, interactivity } from '@threlte/extras';
-	import Word from '$lib/components/word.svelte';
 	import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
+	import Word from '$lib/components/word.svelte';
+	import Butterfly from '$lib/components/butterfly.svelte';
 
 	interactivity();
 
@@ -19,6 +20,7 @@
 </script>
 
 <Suspense>
+	<Butterfly position={[0.1, 2.51, -0.2]} />
 	<Word
 		text={[
 			['W', 0, blue],
