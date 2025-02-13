@@ -36,11 +36,11 @@
 
 <T.Group
 	position={[position[0], position[1], $depth + $raise]}
-	on:pointerover={(e) => {
+	onpointerover={(e: Event) => {
 		e.stopPropagation();
 		raise.set(1);
 	}}
-	on:pointerout={(e) => {
+	onpointerout={(e: Event) => {
 		e.stopPropagation();
 		raise.set(0);
 	}}
