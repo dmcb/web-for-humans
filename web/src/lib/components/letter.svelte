@@ -4,10 +4,19 @@
 	import fragmentShader from '$lib/shaders/fragment.glsl?raw';
 	import vertexShader from '$lib/shaders/vertex.glsl?raw';
 
-	export let letter: string = 'A';
-	export let offset: number = 0;
-	export let color: [number, number, number] = [0, 1, 0];
-	export let font: any;
+	interface Props {
+		letter?: string;
+		offset?: number;
+		color?: [number, number, number];
+		font: any;
+	}
+
+	let {
+		letter = 'A',
+		offset = 0,
+		color = [0, 1, 0],
+		font
+	}: Props = $props();
 </script>
 
 <T.Mesh position={[offset, 0, 0]}>

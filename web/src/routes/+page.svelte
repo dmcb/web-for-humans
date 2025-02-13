@@ -83,11 +83,11 @@
 		margin-top: 0;
 	}
 
-	em {
-		position: absolute;
-		transform: translate(-120%, 0);
-		font-size: 0.6em;
-	}
+	// em {
+	// 	position: absolute;
+	// 	transform: translate(-120%, 0);
+	// 	font-size: 0.6em;
+	// }
 
 	a {
 		margin-top: 1rem;

@@ -3,24 +3,26 @@
 	import Logo from '$lib/components/logo.svelte';
 </script>
 
-<Canvas size={{ width: 1200, height: 800 }}>
-	<!-- <T.AmbientLight intensity={1} /> -->
-	<!-- <T.DirectionalLight intensity={0.5} position={[5, 200, 500]} /> -->
-	<T.OrthographicCamera
-		makeDefault
-		near={-2000}
-		far={2000}
-		zoom={120}
-		position={[-30, -17, 100]}
-		on:create={({ ref }) => {
-			ref.lookAt(1.1, -0.4, 0);
-		}}
-	/>
-	<Logo />
-</Canvas>
+<div>
+	<Canvas>
+		<!-- <T.AmbientLight intensity={1} /> -->
+		<!-- <T.DirectionalLight intensity={0.5} position={[5, 200, 500]} /> -->
+		<T.OrthographicCamera
+			makeDefault
+			near={-2000}
+			far={2000}
+			zoom={120}
+			position={[-30, -17, 100]}
+			on:create={({ ref }) => {
+				ref.lookAt(1.1, -0.4, 0);
+			}}
+		/>
+		<Logo />
+	</Canvas>
+</div>
 
 <style lang="scss">
-	:global(canvas) {
+	div {
 		z-index: -1;
 		position: absolute;
 		object-fit: cover;

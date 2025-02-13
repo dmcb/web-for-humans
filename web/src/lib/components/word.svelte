@@ -5,10 +5,19 @@
 	import { cubicOut } from 'svelte/easing';
 	import Letter from '$lib/components/letter.svelte';
 
-	export let text: [string, number, [number, number, number]][];
-	export let position: [number, number] = [0, 0];
-	export let font: any;
-	export let delay: number = 0;
+	interface Props {
+		text: [string, number, [number, number, number]][];
+		position?: [number, number];
+		font: any;
+		delay?: number;
+	}
+
+	let {
+		text,
+		position = [0, 0],
+		font,
+		delay = 0
+	}: Props = $props();
 
 	const raise = spring(0, {
 		stiffness: 0.05,
