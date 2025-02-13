@@ -34,9 +34,6 @@ Command: npx @threlte/gltf@3.0.0 butterfly.glb --transform --types
       Extrude: THREE.Mesh
       Extrude_1: THREE.Mesh
     }
-    materials: {
-      ['default']: THREE.MeshStandardMaterial
-    }
   }
 
   const dracoLoader = useDraco()
@@ -52,24 +49,28 @@ Command: npx @threlte/gltf@3.0.0 butterfly.glb --transform --types
 >
   <T.Mesh
     geometry={$gltf.nodes.Cube.geometry}
-    material={$gltf.materials['default']}
     rotation={[Math.PI / 2, 0, 0]}
-  />
+  >
+    <T.MeshBasicMaterial color={[0.99, 0.119, 0.09]} />
+  </T.Mesh>
   <T.Mesh
     geometry={$gltf.nodes.Cube1.geometry}
-    material={$gltf.materials['default']}
     rotation={[Math.PI / 2, 0, 0]}
-  />
+  >
+    <T.MeshBasicMaterial color={[0.99, 0.119, 0.09]} />
+  </T.Mesh>
   <T.Mesh
     geometry={$gltf.nodes.Extrude.geometry}
-    material={$gltf.materials['default']}
     rotation={[Math.PI / 2, 0, 0]}
-  />
+  >
+  <T.MeshBasicMaterial color={[0.99, 0.119, 0.09]} />
+  </T.Mesh>
   <T.Mesh
     geometry={$gltf.nodes.Extrude_1.geometry}
-    material={$gltf.materials['default']}
     rotation={[Math.PI / 2, 0, 0]}
-  />
+  >
+    <T.MeshBasicMaterial color={[0.99, 0.119, 0.09]} />
+  </T.Mesh>
 
   {#if ref}
     {@render children?.({ ref })}
