@@ -1,30 +1,33 @@
 <script lang="ts">
 	import { Canvas, T } from '@threlte/core';
 	import Logo from '$lib/components/logo.svelte';
+	import CustomRenderer from './customrenderer.svelte';
 </script>
 
-<div>
-	<Canvas>
-		<!-- <T.AmbientLight intensity={1} /> -->
-		<!-- <T.DirectionalLight intensity={0.5} position={[5, 200, 500]} /> -->
-		<T.OrthographicCamera
-			makeDefault
-			near={-2000}
-			far={2000}
-			zoom={120}
-			position={[-30, -17, 100]}
-			oncreate={(ref) => {
-				ref.lookAt(1.1, -0.4, 0);
-			}}
-		/>
-		<Logo />
-	</Canvas>
-</div>
+<Canvas autoRender={false}>
+	<!-- <T.AmbientLight intensity={1} /> -->
+	<!-- <T.DirectionalLight intensity={0.5} position={[5, 200, 500]} /> -->
+	<T.OrthographicCamera
+		makeDefault
+		near={-2000}
+		far={2000}
+		zoom={120}
+		position={[-30, -17, 100]}
+		oncreate={(ref) => {
+			ref.lookAt(1.1, -0.4, 0);
+		}}
+	/>
+	<Logo />
+	<CustomRenderer />
+</Canvas>
 
 <style lang="scss">
-	div {
+	:global(div) {
+		position: static !important;
+	}
+	:global(canvas) {
 		z-index: -1;
-		position: absolute;
+		position: absolute !important;
 		object-fit: cover;
 		top: 0;
 		left: 0;
