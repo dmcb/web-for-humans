@@ -4,76 +4,53 @@ Command: npx @threlte/gltf@3.0.0 butterfly.glb --transform --types
 -->
 
 <script lang="ts">
-  import type * as THREE from 'three'
+	import type * as THREE from 'three';
 
-  import type { Snippet } from 'svelte'
-  import { T } from '@threlte/core'
-  import { useGltf, useDraco } from '@threlte/extras'
+	import type { Snippet } from 'svelte';
+	import { T } from '@threlte/core';
+	import { useGltf, useDraco } from '@threlte/extras';
 
-  interface Props {
-    position: [number, number, number]
-    fallback?: Snippet
-    error?: Snippet<[{ error: Error }]>
-    children?: Snippet<[{ ref: THREE.Group }]>
-    ref?: THREE.Group
-  }
+	interface Props {
+		position: [number, number, number];
+		fallback?: Snippet;
+		error?: Snippet<[{ error: Error }]>;
+		children?: Snippet<[{ ref: THREE.Group }]>;
+		ref?: THREE.Group;
+	}
 
-  let {
-    position,
-    fallback,
-    error,
-    children,
-    ref = $bindable(),
-    ...props
-  }: Props = $props()
+	let { position, fallback, error, children, ref = $bindable(), ...props }: Props = $props();
 
-  type GLTFResult = {
-    nodes: {
-      Cube: THREE.Mesh
-      Cube1: THREE.Mesh
-      Extrude: THREE.Mesh
-      Extrude_1: THREE.Mesh
-    }
-  }
+	type GLTFResult = {
+		nodes: {
+			Cube: THREE.Mesh;
+			Cube1: THREE.Mesh;
+			Extrude: THREE.Mesh;
+			Extrude_1: THREE.Mesh;
+		};
+		materials: {};
+	};
 
-  const dracoLoader = useDraco()
-  const gltf = useGltf<GLTFResult>('/glb/butterfly.glb', { dracoLoader })
+	const dracoLoader = useDraco();
+	const gltf = useGltf<GLTFResult>('/glb/butterfly.glb', { dracoLoader });
 </script>
 
 {#if $gltf}
-<T.Group
-  bind:ref
-  scale={0.01} 
-  rotation={[-Math.PI/2, Math.PI/4, Math.PI/5]}
-  position={position}
->
-  <T.Mesh
-    geometry={$gltf.nodes.Cube.geometry}
-    rotation={[Math.PI / 2, 0, 0]}
-  >
-    <T.MeshBasicMaterial color={[0.99, 0.119, 0.09]} />
-  </T.Mesh>
-  <T.Mesh
-    geometry={$gltf.nodes.Cube1.geometry}
-    rotation={[Math.PI / 2, 0, 0]}
-  >
-    <T.MeshBasicMaterial color={[0.99, 0.119, 0.09]} />
-  </T.Mesh>
-  <T.Mesh
-    geometry={$gltf.nodes.Extrude.geometry}
-    rotation={[Math.PI / 2, 0, 0]}
-  >
-  <T.MeshBasicMaterial color={[0.99, 0.119, 0.09]} />
-  </T.Mesh>
-  <T.Mesh
-    geometry={$gltf.nodes.Extrude_1.geometry}
-    rotation={[Math.PI / 2, 0, 0]}
-  >
-    <T.MeshBasicMaterial color={[0.99, 0.119, 0.09]} />
-  </T.Mesh>
+	<T.Group bind:ref scale={0.01} rotation={[-Math.PI / 2, Math.PI / 4, Math.PI / 5]} {position}>
+		<T.Mesh geometry={$gltf.nodes.Cube.geometry} rotation={[Math.PI / 2, 0, 0]}>
+			<T.MeshBasicMaterial color={0xba2f22} />
+		</T.Mesh>
+		<T.Mesh geometry={$gltf.nodes.Cube1.geometry} rotation={[Math.PI / 2, 0, 0]}>
+			<T.MeshBasicMaterial color={0xba2f22} />
+		</T.Mesh>
+		<T.Mesh geometry={$gltf.nodes.Extrude.geometry} rotation={[Math.PI / 2, 0, 0]}>
+			<T.MeshBasicMaterial color={0xea594e} />
+		</T.Mesh>
+		<T.Mesh geometry={$gltf.nodes.Extrude_1.geometry} rotation={[Math.PI / 2, 0, 0]}>
+			<T.MeshBasicMaterial color={0xea594e} />
+		</T.Mesh>
 
-  {#if ref}
-    {@render children?.({ ref })}
-  {/if}
-</T.Group>
+		{#if ref}
+			{@render children?.({ ref })}
+		{/if}
+	</T.Group>
 {/if}
