@@ -37,16 +37,16 @@ Command: npx @threlte/gltf@3.0.0 butterfly.glb --transform --types
 {#if $gltf}
 	<T.Group bind:ref scale={0.01} rotation={[-Math.PI / 2, Math.PI / 4, Math.PI / 5]} {position}>
 		<T.Mesh geometry={$gltf.nodes.Cube.geometry} rotation={[Math.PI / 2, 0, 0]}>
-			<T.MeshBasicMaterial color={0xba2f22} />
+			<T.MeshPhongMaterial color={0xea594e} flatShading={true} />
 		</T.Mesh>
 		<T.Mesh geometry={$gltf.nodes.Cube1.geometry} rotation={[Math.PI / 2, 0, 0]}>
-			<T.MeshBasicMaterial color={0xba2f22} />
+			<T.MeshPhongMaterial color={0xea594e} flatShading={true} />
 		</T.Mesh>
 		<T.Mesh geometry={$gltf.nodes.Extrude.geometry} rotation={[Math.PI / 2, 0, 0]}>
-			<T.MeshBasicMaterial color={0xea594e} />
+			<T.MeshPhongMaterial color={0xea594e} flatShading={true} />
 		</T.Mesh>
 		<T.Mesh geometry={$gltf.nodes.Extrude_1.geometry} rotation={[Math.PI / 2, 0, 0]}>
-			<T.MeshBasicMaterial color={0xea594e} />
+			<T.MeshPhongMaterial color={0xea594e} flatShading={true} />
 		</T.Mesh>
 
 		{#if ref}
