@@ -5,8 +5,8 @@
 </script>
 
 <Canvas autoRender={false}>
-	<T.AmbientLight intensity={0.8} />
-	<T.DirectionalLight intensity={1} position={[-2, 0, 0]} />
+	<T.AmbientLight intensity={1} />
+	<T.DirectionalLight intensity={4} position={[-2, 0, 0]} />
 	<T.OrthographicCamera
 		makeDefault
 		near={-2000}

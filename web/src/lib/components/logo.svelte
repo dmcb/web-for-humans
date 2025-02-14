@@ -7,20 +7,26 @@
 
 	interactivity();
 
-	let font = useLoader(FontLoader).load('/fonts/Barlow_Condensed_Bold.json');
-	let accentFont = useLoader(FontLoader).load('/fonts/Crimson_Text_SemiBold_Italic.json');
+	const font = useLoader(FontLoader).load('/fonts/Barlow_Condensed_Bold.json');
+	const accentFont = useLoader(FontLoader).load('/fonts/Crimson_Text_SemiBold_Italic.json');
 
-	let red: [number, number, number] = [0.99, 0.119, 0.09];
-	let orange: [number, number, number] = [0.985, 0.411, 0];
-	let yellow: [number, number, number] = [0.987, 0.72, 0];
-	let green: [number, number, number] = [0.583, 0.704, 0];
-	let turquoise: [number, number, number] = [0, 0.67, 0.6];
-	let blue: [number, number, number] = [0, 0.647, 0.951];
-	let fuschia: [number, number, number] = [0.94, 0, 0.34];
+	const red: [number, number, number] = [0.99, 0.119, 0.09];
+	const orange: [number, number, number] = [0.985, 0.411, 0];
+	const yellow: [number, number, number] = [0.987, 0.72, 0];
+	const green: [number, number, number] = [0.583, 0.704, 0];
+	const turquoise: [number, number, number] = [0, 0.67, 0.6];
+	const blue: [number, number, number] = [0, 0.647, 0.951];
+	const fuschia: [number, number, number] = [0.94, 0, 0.34];
+
+	const perchPoints: [number, number, number][] = [
+		[0.1, 2.51, -0.2],
+		[-1, 1.45, -0.2],
+		[3.88, 1.55, -0.2]
+	];
 </script>
 
 <Suspense>
-	<Butterfly position={[0.1, 2.51, -0.2]} />
+	<Butterfly position={[0, 5, -0.2]} {perchPoints} />
 	<Word
 		text={[
 			['W', 0, blue],

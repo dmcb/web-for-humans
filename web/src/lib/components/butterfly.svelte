@@ -5,20 +5,17 @@ Command: npx @threlte/gltf@3.0.0 butterfly.glb --transform --types
 
 <script lang="ts">
 	import type * as THREE from 'three';
-
 	import type { Snippet } from 'svelte';
-	import { T } from '@threlte/core';
+	import { Vector3, CatmullRomCurve3 } from 'three';
+	import { T, useTask } from '@threlte/core';
 	import { useGltf, useDraco } from '@threlte/extras';
 
 	interface Props {
 		position: [number, number, number];
-		fallback?: Snippet;
-		error?: Snippet<[{ error: Error }]>;
-		children?: Snippet<[{ ref: THREE.Group }]>;
-		ref?: THREE.Group;
+		perchPoints: [number, number, number][];
 	}
 
-	let { position, fallback, error, children, ref = $bindable(), ...props }: Props = $props();
+	let { position, perchPoints }: Props = $props();
 
 	type GLTFResult = {
 		nodes: {
@@ -32,25 +29,53 @@ Command: npx @threlte/gltf@3.0.0 butterfly.glb --transform --types
 
 	const dracoLoader = useDraco();
 	const gltf = useGltf<GLTFResult>('/glb/butterfly.glb', { dracoLoader });
+
+	const origin = new Vector3(position[0], position[1], position[2]);
+	const target = new Vector3(perchPoints[2][0], perchPoints[2][1], perchPoints[2][2]);
+
+	function interpolatePoint(p1: Vector3, p2: Vector3, t: number, randomness: number): Vector3 {
+		const x = p1.x + (p2.x - p1.x) * t + (Math.random() - 0.5) * randomness;
+		const y = p1.y + (p2.y - p1.y) * t + (Math.random() - 0.5) * randomness;
+		const z = p1.z + (p2.z - p1.z) * t + (Math.random() - 0.5) * randomness;
+		return new Vector3(x, y, z);
+	}
+
+	function easeOutQuint(x: number): number {
+		return 1 - Math.pow(1 - x, 5);
+	}
+
+	const point1 = interpolatePoint(origin, target, 0.33, 2);
+	const point2 = interpolatePoint(origin, target, 0.66, 2);
+
+	const flightPath = new CatmullRomCurve3([origin, point1, point2, target]);
+	let ref: THREE.Group | undefined;
+	let flightTime = 0;
+
+	useTask((delta) => {
+		const duration = 3;
+		flightTime += delta;
+		const t = flightTime / duration;
+		if (t <= 1) {
+			const x = easeOutQuint(t);
+			const newPosition = flightPath.getPointAt(x);
+			ref?.position.copy(newPosition);
+		}
+	});
 </script>
 
 {#if $gltf}
 	<T.Group bind:ref scale={0.01} rotation={[-Math.PI / 2, Math.PI / 4, Math.PI / 5]} {position}>
 		<T.Mesh geometry={$gltf.nodes.Cube.geometry} rotation={[Math.PI / 2, 0, 0]}>
-			<T.MeshPhongMaterial color={0xea594e} flatShading={true} />
+			<T.MeshStandardMaterial color={0xea594e} flatShading={true} />
 		</T.Mesh>
 		<T.Mesh geometry={$gltf.nodes.Cube1.geometry} rotation={[Math.PI / 2, 0, 0]}>
-			<T.MeshPhongMaterial color={0xea594e} flatShading={true} />
+			<T.MeshStandardMaterial color={0xea594e} flatShading={true} />
 		</T.Mesh>
 		<T.Mesh geometry={$gltf.nodes.Extrude.geometry} rotation={[Math.PI / 2, 0, 0]}>
-			<T.MeshPhongMaterial color={0xea594e} flatShading={true} />
+			<T.MeshStandardMaterial color={0xea594e} flatShading={true} />
 		</T.Mesh>
 		<T.Mesh geometry={$gltf.nodes.Extrude_1.geometry} rotation={[Math.PI / 2, 0, 0]}>
-			<T.MeshPhongMaterial color={0xea594e} flatShading={true} />
+			<T.MeshStandardMaterial color={0xea594e} flatShading={true} />
 		</T.Mesh>
-
-		{#if ref}
-			{@render children?.({ ref })}
-		{/if}
 	</T.Group>
 {/if}

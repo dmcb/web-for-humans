@@ -12,12 +12,7 @@
 		delay?: number;
 	}
 
-	let {
-		text,
-		position = [0, 0],
-		font,
-		delay = 0
-	}: Props = $props();
+	let { text, position = [0, 0], font, delay = 0 }: Props = $props();
 
 	const raise = spring(0, {
 		stiffness: 0.05,
