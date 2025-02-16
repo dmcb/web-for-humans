@@ -5,10 +5,9 @@ Command: npx @threlte/gltf@3.0.0 butterfly.glb --transform --types
 
 <script lang="ts">
 	import type * as THREE from 'three';
-	import type { Snippet } from 'svelte';
 	import { Vector3, CatmullRomCurve3 } from 'three';
 	import { T, useTask } from '@threlte/core';
-	import { useGltf, useDraco } from '@threlte/extras';
+	import { useGltf, useDraco, onReveal } from '@threlte/extras';
 
 	interface Props {
 		position: [number, number, number];
@@ -30,9 +29,6 @@ Command: npx @threlte/gltf@3.0.0 butterfly.glb --transform --types
 	const dracoLoader = useDraco();
 	const gltf = useGltf<GLTFResult>('/glb/butterfly.glb', { dracoLoader });
 
-	const origin = new Vector3(position[0], position[1], position[2]);
-	const target = new Vector3(perchPoints[2][0], perchPoints[2][1], perchPoints[2][2]);
-
 	function interpolatePoint(p1: Vector3, p2: Vector3, t: number, randomness: number): Vector3 {
 		const x = p1.x + (p2.x - p1.x) * t + (Math.random() - 0.5) * randomness;
 		const y = p1.y + (p2.y - p1.y) * t + (Math.random() - 0.5) * randomness;
@@ -40,27 +36,97 @@ Command: npx @threlte/gltf@3.0.0 butterfly.glb --transform --types
 		return new Vector3(x, y, z);
 	}
 
-	function easeOutQuint(x: number): number {
-		return 1 - Math.pow(1 - x, 5);
+	function easeOutQuad(x: number): number {
+		return 1 - (1 - x) * (1 - x);
 	}
 
-	const point1 = interpolatePoint(origin, target, 0.33, 2);
-	const point2 = interpolatePoint(origin, target, 0.66, 2);
-
-	const flightPath = new CatmullRomCurve3([origin, point1, point2, target]);
+	let flightPath = new CatmullRomCurve3();
 	let ref: THREE.Group | undefined;
 	let flightTime = 0;
 
+	let state = 'Perched';
+
+	function switchState(newState: 'Perched' | 'LeavingPerch' | 'HoldPattern' | 'FlyingToPerch') {
+		state = newState;
+		flightTime = 0;
+		switch (state) {
+			case 'FlyingToPerch':
+				setFlightPath(perchPoints[Math.floor(Math.random() * perchPoints.length)]);
+				break;
+		}
+	}
+
+	function setFlightPath(target: [number, number, number]) {
+		const originPoint = new Vector3(position[0], position[1], position[2]);
+		const targetPoint = new Vector3(target[0], target[1], target[2]);
+		const point1 = interpolatePoint(originPoint, targetPoint, 0.25, 1.5);
+		const point2 = interpolatePoint(originPoint, targetPoint, 0.5, 1.5);
+		const point3 = interpolatePoint(originPoint, targetPoint, 0.75, 1.5);
+		flightPath = new CatmullRomCurve3(
+			[originPoint, point1, point2, point3, targetPoint],
+			false,
+			'chordal'
+		);
+	}
+
+	onReveal(() => {
+		switchState('FlyingToPerch');
+	});
+
 	useTask((delta) => {
-		const duration = 3;
 		flightTime += delta;
-		const t = flightTime / duration;
-		if (t <= 1) {
-			const x = easeOutQuint(t);
-			const newPosition = flightPath.getPointAt(x);
-			ref?.position.copy(newPosition);
+		switch (state) {
+			case 'Perched':
+				// Do nothing
+				break;
+			case 'LeavingPerch':
+				animateLeavingPerch();
+				break;
+			case 'HoldPattern':
+				animateHoldPattern();
+				break;
+			case 'FlyingToPerch':
+				animateFlyingToPerch();
+				break;
 		}
 	});
+
+	function animateLeavingPerch() {
+		const duration = 1;
+		const t = flightTime / duration;
+		if (t > 1) {
+			switchState('HoldPattern');
+			return;
+		}
+		const x = easeOutQuad(t);
+		const newPosition = flightPath.getPointAt(x);
+		ref?.position.copy(newPosition);
+	}
+
+	function animateHoldPattern() {
+		const duration = 5;
+		const t = flightTime / duration;
+		const newPosition = flightPath.getPointAt(t);
+		ref?.position.copy(newPosition);
+	}
+
+	function animateFlyingToPerch() {
+		const duration = 3;
+		const t = flightTime / duration;
+		if (t > 1) {
+			switchState('Perched');
+			return;
+		}
+		const x = easeOutQuad(t);
+		const newPosition = flightPath.getPointAt(x);
+		ref?.position.copy(newPosition);
+	}
+
+	// 4 animation states for the butterly, perched, flying in a hold pattern, flying to pearch, leaving pearch
+	// 1. perched does nothing, until that word is hovered over, then butterfly switches to leave pearch
+	// 2. leaving pearch flies away from the word with quick speed, easing out and then butterly switches to flying in a hold pattern
+	// 3. flying in a hold pattern creates random tight flight paths and follows them at a constant speed until a certain time has elapsed, then butterfly switches to flying to pearch
+	// 4. flying to pearch flies in a line with some random curves with a speed that eases out until it reaches the pearch point, then butterfly switches to perched
 </script>
 
 {#if $gltf}
