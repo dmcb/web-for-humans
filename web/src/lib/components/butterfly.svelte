@@ -12,9 +12,10 @@ Command: npx @threlte/gltf@3.0.0 butterfly.glb --transform --types
 	interface Props {
 		position: [number, number, number];
 		perchPoints: [number, number, number][];
+		shookPerch: number;
 	}
 
-	let { position, perchPoints }: Props = $props();
+	let { position, perchPoints, shookPerch }: Props = $props();
 
 	type GLTFResult = {
 		nodes: {
@@ -32,32 +33,12 @@ Command: npx @threlte/gltf@3.0.0 butterfly.glb --transform --types
 	function interpolatePoint(p1: Vector3, p2: Vector3, t: number, randomness: number): Vector3 {
 		const x = p1.x + (p2.x - p1.x) * t + (Math.random() - 0.5) * randomness;
 		const y = p1.y + (p2.y - p1.y) * t + (Math.random() - 0.5) * randomness;
-		const z = p1.z + (p2.z - p1.z) * t + (Math.random() - 0.5) * randomness;
+		const z = 2; // Butterfly will fly in front of the words
 		return new Vector3(x, y, z);
 	}
 
-	function easeOutQuad(x: number): number {
-		return 1 - (1 - x) * (1 - x);
-	}
-
-	let flightPath = new CatmullRomCurve3();
-	let ref: THREE.Group | undefined;
-	let flightTime = 0;
-
-	let state = 'Perched';
-
-	function switchState(newState: 'Perched' | 'LeavingPerch' | 'HoldPattern' | 'FlyingToPerch') {
-		state = newState;
-		flightTime = 0;
-		switch (state) {
-			case 'FlyingToPerch':
-				setFlightPath(perchPoints[Math.floor(Math.random() * perchPoints.length)]);
-				break;
-		}
-	}
-
 	function setFlightPath(target: [number, number, number]) {
-		const originPoint = new Vector3(position[0], position[1], position[2]);
+		const originPoint = ref?.position.clone() as Vector3;
 		const targetPoint = new Vector3(target[0], target[1], target[2]);
 		const point1 = interpolatePoint(originPoint, targetPoint, 0.25, 1.5);
 		const point2 = interpolatePoint(originPoint, targetPoint, 0.5, 1.5);
@@ -69,9 +50,51 @@ Command: npx @threlte/gltf@3.0.0 butterfly.glb --transform --types
 		);
 	}
 
-	onReveal(() => {
-		switchState('FlyingToPerch');
+	function easeOutQuad(x: number): number {
+		return 1 - (1 - x) * (1 - x);
+	}
+
+	let flightPath = new CatmullRomCurve3();
+	let ref: THREE.Group | undefined;
+	let flightTime = 0;
+	let state = 'Perched';
+	let targetPerch = -1;
+	let perch = -1;
+
+	$effect(() => {
+		if (shookPerch != -1 && shookPerch == perch) {
+			console.log('Butterfly leaving perch', perch);
+			// switchState('LeavingPerch');
+			targetPerch = Math.floor(Math.random() * perchPoints.length);
+			switchState('FlyingToPerch');
+		}
 	});
+
+	onReveal(() => {
+		setTimeout(() => {
+			switchState('FlyingToPerch');
+		}, 1000);
+	});
+
+	function switchState(newState: 'Perched' | 'LeavingPerch' | 'HoldPattern' | 'FlyingToPerch') {
+		console.log('Switching state to', newState);
+		state = newState;
+		flightTime = 0;
+		switch (state) {
+			case 'Perched':
+				perch = targetPerch;
+				console.log('Perched on perch', perch);
+				break;
+			case 'HoldPattern': {
+				setFlightPath(position);
+				break;
+			}
+			case 'FlyingToPerch':
+				targetPerch = Math.floor(Math.random() * perchPoints.length);
+				setFlightPath(perchPoints[targetPerch]);
+				break;
+		}
+	}
 
 	useTask((delta) => {
 		flightTime += delta;
