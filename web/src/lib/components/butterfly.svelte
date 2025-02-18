@@ -18,10 +18,12 @@ Command: npx @threlte/gltf@3.0.0 butterfly.glb --transform --types
 
 	type GLTFResult = {
 		nodes: {
-			Cube: THREE.Mesh;
-			Cube1: THREE.Mesh;
-			Extrude: THREE.Mesh;
-			Extrude_1: THREE.Mesh;
+			Plane018: THREE.Mesh;
+			Cylinder001: THREE.Mesh;
+			Sphere002: THREE.Mesh;
+			NurbsPath_1: THREE.Mesh;
+			Plane021: THREE.Mesh;
+			Cylinder020_1: THREE.Mesh;
 		};
 		materials: {};
 	};
@@ -176,18 +178,53 @@ Command: npx @threlte/gltf@3.0.0 butterfly.glb --transform --types
 </script>
 
 {#if $gltf}
-	<T.Group bind:ref scale={0.01} rotation={[-Math.PI / 2, Math.PI / 4, Math.PI / 5]} {position}>
-		<T.Mesh geometry={$gltf.nodes.Cube.geometry} rotation={[Math.PI / 2, 0, 0]}>
+	<T.Group bind:ref scale={0.7} rotation={[-Math.PI / 12, Math.PI, 0]} {position}>
+		<T.Mesh
+			geometry={$gltf.nodes.Plane018.geometry}
+			position={[0, -0.01, -0.17]}
+			rotation={[-1.72, -0.42, 0.01]}
+		>
 			<T.MeshStandardMaterial color={0xea594e} flatShading={true} />
 		</T.Mesh>
-		<T.Mesh geometry={$gltf.nodes.Cube1.geometry} rotation={[Math.PI / 2, 0, 0]}>
+		<T.Mesh
+			geometry={$gltf.nodes.Cylinder001.geometry}
+			position={[0, -0.01, -0.17]}
+			rotation={[-1.72, -0.01, 0]}
+			scale={1.1}
+		>
+			<T.MeshStandardMaterial color={0xafc23d} flatShading={true} />
+		</T.Mesh>
+		<T.Mesh
+			geometry={$gltf.nodes.Sphere002.geometry}
+			position={[0, -0.01, -0.17]}
+			rotation={[-1.72, -0.01, 0]}
+			scale={1.1}
+		>
+			<T.MeshStandardMaterial color={0xafc23d} flatShading={true} />
+		</T.Mesh>
+		<T.Mesh
+			geometry={$gltf.nodes.NurbsPath_1.geometry}
+			position={[0, -0.01, -0.17]}
+			rotation={[-1.72, -0.01, 0]}
+			scale={1.1}
+		>
+			<T.MeshStandardMaterial color={0xafc23d} flatShading={true} />
+		</T.Mesh>
+		<T.Mesh
+			geometry={$gltf.nodes.Plane021.geometry}
+			position={[0, -0.01, -0.17]}
+			rotation={[1.42, -0.41, 0]}
+			scale={-1.1}
+		>
 			<T.MeshStandardMaterial color={0xea594e} flatShading={true} />
 		</T.Mesh>
-		<T.Mesh geometry={$gltf.nodes.Extrude.geometry} rotation={[Math.PI / 2, 0, 0]}>
-			<T.MeshStandardMaterial color={0xea594e} flatShading={true} />
-		</T.Mesh>
-		<T.Mesh geometry={$gltf.nodes.Extrude_1.geometry} rotation={[Math.PI / 2, 0, 0]}>
-			<T.MeshStandardMaterial color={0xea594e} flatShading={true} />
+		<T.Mesh
+			geometry={$gltf.nodes.Cylinder020_1.geometry}
+			position={[0, -0.01, -0.17]}
+			rotation={[-1.72, -0.01, 0]}
+			scale={1.1}
+		>
+			<T.MeshStandardMaterial color={0xafc23d} flatShading={true} />
 		</T.Mesh>
 	</T.Group>
 {/if}
