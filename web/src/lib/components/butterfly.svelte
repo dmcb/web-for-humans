@@ -35,7 +35,7 @@ Command: npx @threlte/gltf@3.0.0 butterfly.glb --transform --types
 	let state = 'Perched';
 	let targetPerch = -1;
 	let perch = -1;
-	let position = [0, 5, -0.2];
+	let position = [0, 5, -0.2] as [number, number, number];
 
 	function interpolatePoint(p1: Vector3, p2: Vector3, t: number, jitter: number): Vector3 {
 		const x = p1.x + (p2.x - p1.x) * t + (Math.random() - 0.5) * jitter;
@@ -61,13 +61,15 @@ Command: npx @threlte/gltf@3.0.0 butterfly.glb --transform --types
 		return 1 - (1 - x) * (1 - x);
 	}
 
+	function easeInOutSine(x: number): number {
+		return -(Math.cos(Math.PI * x) - 1) / 2;
+	}
+
 	$effect(() => {
 		if (shookPerch != -1) {
 			if (state == 'Perched' && shookPerch == perch) {
 				console.log('Butterfly leaving perch', perch);
-				// switchState('LeavingPerch');
-				targetPerch = Math.floor(Math.random() * perchPoints.length);
-				switchState('FlyingToPerch');
+				switchState('LeavingPerch');
 			} else if (state == 'FlyingToPerch' && shookPerch == targetPerch) {
 				console.log('Butterfly holding');
 				switchState('HoldPattern');
@@ -90,12 +92,20 @@ Command: npx @threlte/gltf@3.0.0 butterfly.glb --transform --types
 				perch = targetPerch;
 				console.log('Perched on perch', perch);
 				break;
+			case 'LeavingPerch':
+				// Fly in front of the words
+				setFlightPath([position[0], position[1], 2], 0);
+				break;
 			case 'HoldPattern': {
-				setFlightPath(position, 0.5);
+				// Fly in a random tight pattern around the current location
+				setFlightPath(position, 0.4);
 				break;
 			}
 			case 'FlyingToPerch':
-				targetPerch = Math.floor(Math.random() * perchPoints.length);
+				// Fly in a lose pattern to a random perch, unless it's the shook perch
+				do {
+					targetPerch = Math.floor(Math.random() * perchPoints.length);
+				} while (targetPerch == shookPerch);
 				setFlightPath(perchPoints[targetPerch], 1);
 				break;
 		}
@@ -107,9 +117,6 @@ Command: npx @threlte/gltf@3.0.0 butterfly.glb --transform --types
 		}
 		flightTime += delta;
 		switch (state) {
-			case 'Perched':
-				// Do nothing
-				break;
 			case 'LeavingPerch':
 				animateLeavingPerch();
 				break;
@@ -123,7 +130,7 @@ Command: npx @threlte/gltf@3.0.0 butterfly.glb --transform --types
 	});
 
 	function animateLeavingPerch() {
-		const duration = 1;
+		const duration = 0.4;
 		const t = flightTime / duration;
 		if (t > 1) {
 			switchState('HoldPattern');
@@ -135,7 +142,7 @@ Command: npx @threlte/gltf@3.0.0 butterfly.glb --transform --types
 	}
 
 	function animateHoldPattern() {
-		const duration = 3;
+		const duration = 4;
 		const t = flightTime / duration;
 		if (t > 1) {
 			switchState('FlyingToPerch');
@@ -151,17 +158,11 @@ Command: npx @threlte/gltf@3.0.0 butterfly.glb --transform --types
 		if (t > 1) {
 			switchState('Perched');
 		} else {
-			// const x = easeOutQuad(t);
-			const newPosition = flightPath.getPointAt(t);
+			const x = easeInOutSine(t);
+			const newPosition = flightPath.getPointAt(x);
 			ref?.position.copy(newPosition);
 		}
 	}
-
-	// 4 animation states for the butterly, perched, flying in a hold pattern, flying to pearch, leaving pearch
-	// 1. perched does nothing, until that word is hovered over, then butterfly switches to leave pearch
-	// 2. leaving pearch flies away from the word with quick speed, easing out and then butterly switches to flying in a hold pattern
-	// 3. flying in a hold pattern creates random tight flight paths and follows them at a constant speed until a certain time has elapsed, then butterfly switches to flying to pearch
-	// 4. flying to pearch flies in a line with some random curves with a speed that eases out until it reaches the pearch point, then butterfly switches to perched
 </script>
 
 {#if $gltf}

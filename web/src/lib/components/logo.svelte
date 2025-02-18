@@ -27,7 +27,6 @@
 	let shookPerch = $state(-1);
 
 	function shakePerch(perch: number) {
-		console.log('Shaking perch', perch);
 		shookPerch = perch;
 	}
 </script>
