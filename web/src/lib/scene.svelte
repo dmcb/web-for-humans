@@ -24,10 +24,10 @@
 <style lang="scss">
 	:global(div) {
 		position: absolute !important;
+		z-index: -1;
 		top: 0;
 	}
 	:global(canvas) {
-		z-index: -1;
 		object-fit: cover;
 		top: 0;
 		left: 0;
