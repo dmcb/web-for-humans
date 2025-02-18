@@ -36,6 +36,7 @@ Command: npx @threlte/gltf@3.0.0 butterfly.glb --transform --types
 	let targetPerch = -1;
 	let perch = -1;
 	let position = [0, 5, -0.2] as [number, number, number];
+	let speed = 0;
 
 	function interpolatePoint(p1: Vector3, p2: Vector3, t: number, jitter: number): Vector3 {
 		const x = p1.x + (p2.x - p1.x) * t + (Math.random() - 0.5) * jitter;
@@ -55,7 +56,8 @@ Command: npx @threlte/gltf@3.0.0 butterfly.glb --transform --types
 		flightPath = new CatmullRomCurve3(
 			[originPoint, ...pointsValues, targetPoint],
 			false,
-			'chordal'
+			'catmullrom',
+			0.9
 		);
 	}
 
@@ -96,11 +98,15 @@ Command: npx @threlte/gltf@3.0.0 butterfly.glb --transform --types
 				break;
 			case 'LeavingPerch':
 				// Fly in front of the words
-				setFlightPath([position[0], position[1], 2], 0, 0);
+				setFlightPath(
+					[position[0] + (Math.random() - 0.5) * 2, position[1] + (Math.random() - 0.5) * 2, 2],
+					0,
+					0
+				);
 				break;
 			case 'HoldPattern': {
 				// Fly in a random tight pattern around the current location
-				setFlightPath(position, 5, 0.4);
+				setFlightPath(position, 5, 0.8);
 				break;
 			}
 			case 'FlyingToPerch':
@@ -115,6 +121,8 @@ Command: npx @threlte/gltf@3.0.0 butterfly.glb --transform --types
 
 	useTask((delta) => {
 		if (ref) {
+			const positionDiff = new Vector3(position[0], position[1], position[2]).sub(ref.position);
+			const speed = positionDiff.length() / delta;
 			position = [ref?.position.x, ref?.position.y, ref?.position.z];
 		}
 		flightTime += delta;

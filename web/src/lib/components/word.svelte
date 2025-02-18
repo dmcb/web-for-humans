@@ -41,6 +41,7 @@
 	onpointerout={(e: Event) => {
 		e.stopPropagation();
 		raise.set(0);
+		shakePerch(-1);
 	}}
 >
 	{#each text as [letter, offset, color], i}
