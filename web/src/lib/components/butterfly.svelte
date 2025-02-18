@@ -10,12 +10,11 @@ Command: npx @threlte/gltf@3.0.0 butterfly.glb --transform --types
 	import { useGltf, useDraco, onReveal } from '@threlte/extras';
 
 	interface Props {
-		position: [number, number, number];
 		perchPoints: [number, number, number][];
 		shookPerch: number;
 	}
 
-	let { position, perchPoints, shookPerch }: Props = $props();
+	let { perchPoints, shookPerch }: Props = $props();
 
 	type GLTFResult = {
 		nodes: {
@@ -30,19 +29,27 @@ Command: npx @threlte/gltf@3.0.0 butterfly.glb --transform --types
 	const dracoLoader = useDraco();
 	const gltf = useGltf<GLTFResult>('/glb/butterfly.glb', { dracoLoader });
 
-	function interpolatePoint(p1: Vector3, p2: Vector3, t: number, randomness: number): Vector3 {
-		const x = p1.x + (p2.x - p1.x) * t + (Math.random() - 0.5) * randomness;
-		const y = p1.y + (p2.y - p1.y) * t + (Math.random() - 0.5) * randomness;
+	let flightPath = new CatmullRomCurve3();
+	let ref: THREE.Group | undefined;
+	let flightTime = 0;
+	let state = 'Perched';
+	let targetPerch = -1;
+	let perch = -1;
+	let position = [0, 5, -0.2];
+
+	function interpolatePoint(p1: Vector3, p2: Vector3, t: number, jitter: number): Vector3 {
+		const x = p1.x + (p2.x - p1.x) * t + (Math.random() - 0.5) * jitter;
+		const y = p1.y + (p2.y - p1.y) * t + (Math.random() - 0.5) * jitter;
 		const z = 2; // Butterfly will fly in front of the words
 		return new Vector3(x, y, z);
 	}
 
-	function setFlightPath(target: [number, number, number]) {
-		const originPoint = ref?.position.clone() as Vector3;
+	function setFlightPath(target: [number, number, number], jitter: number) {
+		const originPoint = new Vector3(position[0], position[1], position[2]);
 		const targetPoint = new Vector3(target[0], target[1], target[2]);
-		const point1 = interpolatePoint(originPoint, targetPoint, 0.25, 1.5);
-		const point2 = interpolatePoint(originPoint, targetPoint, 0.5, 1.5);
-		const point3 = interpolatePoint(originPoint, targetPoint, 0.75, 1.5);
+		const point1 = interpolatePoint(originPoint, targetPoint, 0.25, jitter);
+		const point2 = interpolatePoint(originPoint, targetPoint, 0.5, jitter);
+		const point3 = interpolatePoint(originPoint, targetPoint, 0.75, jitter);
 		flightPath = new CatmullRomCurve3(
 			[originPoint, point1, point2, point3, targetPoint],
 			false,
@@ -54,19 +61,17 @@ Command: npx @threlte/gltf@3.0.0 butterfly.glb --transform --types
 		return 1 - (1 - x) * (1 - x);
 	}
 
-	let flightPath = new CatmullRomCurve3();
-	let ref: THREE.Group | undefined;
-	let flightTime = 0;
-	let state = 'Perched';
-	let targetPerch = -1;
-	let perch = -1;
-
 	$effect(() => {
-		if (shookPerch != -1 && shookPerch == perch) {
-			console.log('Butterfly leaving perch', perch);
-			// switchState('LeavingPerch');
-			targetPerch = Math.floor(Math.random() * perchPoints.length);
-			switchState('FlyingToPerch');
+		if (shookPerch != -1) {
+			if (state == 'Perched' && shookPerch == perch) {
+				console.log('Butterfly leaving perch', perch);
+				// switchState('LeavingPerch');
+				targetPerch = Math.floor(Math.random() * perchPoints.length);
+				switchState('FlyingToPerch');
+			} else if (state == 'FlyingToPerch' && shookPerch == targetPerch) {
+				console.log('Butterfly holding');
+				switchState('HoldPattern');
+			}
 		}
 	});
 
@@ -86,17 +91,20 @@ Command: npx @threlte/gltf@3.0.0 butterfly.glb --transform --types
 				console.log('Perched on perch', perch);
 				break;
 			case 'HoldPattern': {
-				setFlightPath(position);
+				setFlightPath(position, 0.5);
 				break;
 			}
 			case 'FlyingToPerch':
 				targetPerch = Math.floor(Math.random() * perchPoints.length);
-				setFlightPath(perchPoints[targetPerch]);
+				setFlightPath(perchPoints[targetPerch], 1);
 				break;
 		}
 	}
 
 	useTask((delta) => {
+		if (ref) {
+			position = [ref?.position.x, ref?.position.y, ref?.position.z];
+		}
 		flightTime += delta;
 		switch (state) {
 			case 'Perched':
@@ -127,10 +135,14 @@ Command: npx @threlte/gltf@3.0.0 butterfly.glb --transform --types
 	}
 
 	function animateHoldPattern() {
-		const duration = 5;
+		const duration = 3;
 		const t = flightTime / duration;
-		const newPosition = flightPath.getPointAt(t);
-		ref?.position.copy(newPosition);
+		if (t > 1) {
+			switchState('FlyingToPerch');
+		} else {
+			const newPosition = flightPath.getPointAt(t);
+			ref?.position.copy(newPosition);
+		}
 	}
 
 	function animateFlyingToPerch() {
@@ -138,11 +150,11 @@ Command: npx @threlte/gltf@3.0.0 butterfly.glb --transform --types
 		const t = flightTime / duration;
 		if (t > 1) {
 			switchState('Perched');
-			return;
+		} else {
+			// const x = easeOutQuad(t);
+			const newPosition = flightPath.getPointAt(t);
+			ref?.position.copy(newPosition);
 		}
-		const x = easeOutQuad(t);
-		const newPosition = flightPath.getPointAt(x);
-		ref?.position.copy(newPosition);
 	}
 
 	// 4 animation states for the butterly, perched, flying in a hold pattern, flying to pearch, leaving pearch

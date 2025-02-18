@@ -33,7 +33,7 @@
 </script>
 
 <Suspense>
-	<Butterfly position={[0, 5, -0.2]} {perchPoints} {shookPerch} />
+	<Butterfly {perchPoints} {shookPerch} />
 	<Word
 		text={[
 			['W', 0, blue],
