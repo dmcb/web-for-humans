@@ -126,14 +126,14 @@ Command: npx @threlte/gltf@3.0.0 butterfly.glb --transform --types
 	useTask((delta) => {
 		if (ref) {
 			const positionDiff = new Vector3(position[0], position[1], position[2]).sub(ref.position);
-			// const speed = positionDiff.length() / delta;
+			const speed = 0.05 + positionDiff.length() / delta;
 			position = [ref?.position.x, ref?.position.y, ref?.position.z];
 
-			// const wingFlapSpeed = speed * 0.3;
-			const wingRotation = Math.abs(Math.sin(Date.now() * 0.01)) * 0.8;
+			const wingFlapSpeed = speed * 0.4;
+			const wingRotation = Math.abs(Math.sin(Date.now() * 0.01)) * wingFlapSpeed;
 			if (leftwing && rightwing) {
-				leftwing.rotation.y = -0.42 - wingRotation;
-				rightwing.rotation.y = -0.42 - wingRotation;
+				leftwing.rotation.y = -0.2 - wingRotation;
+				rightwing.rotation.y = -0.2 - wingRotation;
 			}
 		}
 
