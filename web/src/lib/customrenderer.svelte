@@ -18,6 +18,7 @@
 			orthographicCamera.updateProjectionMatrix();
 
 			renderer.setSize(1200, 800);
+			renderer.toneMapping = THREE.NoToneMapping;
 			renderer.render(scene, orthographicCamera);
 		},
 		{ stage: renderStage }

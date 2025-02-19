@@ -7,17 +7,14 @@
 
 	interface Props {
 		text: [string, number, [number, number, number]][];
-		position?: [number, number];
+		position: [number, number];
+		perch: number;
+		shakePerch: (perch: number) => void;
 		font: any;
 		delay?: number;
 	}
 
-	let {
-		text,
-		position = [0, 0],
-		font,
-		delay = 0
-	}: Props = $props();
+	let { text, position, perch, shakePerch, font, delay = 0 }: Props = $props();
 
 	const raise = spring(0, {
 		stiffness: 0.05,
@@ -39,10 +36,12 @@
 	onpointerover={(e: Event) => {
 		e.stopPropagation();
 		raise.set(1);
+		shakePerch(perch);
 	}}
 	onpointerout={(e: Event) => {
 		e.stopPropagation();
 		raise.set(0);
+		shakePerch(-1);
 	}}
 >
 	{#each text as [letter, offset, color], i}

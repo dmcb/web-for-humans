@@ -5,8 +5,8 @@
 </script>
 
 <Canvas autoRender={false}>
-	<!-- <T.AmbientLight intensity={1} /> -->
-	<!-- <T.DirectionalLight intensity={0.5} position={[5, 200, 500]} /> -->
+	<T.AmbientLight intensity={1} />
+	<T.DirectionalLight intensity={4} position={[-2, 0, 0]} />
 	<T.OrthographicCamera
 		makeDefault
 		near={-2000}
@@ -24,10 +24,10 @@
 <style lang="scss">
 	:global(div) {
 		position: absolute !important;
+		z-index: -1;
 		top: 0;
 	}
 	:global(canvas) {
-		z-index: -1;
 		object-fit: cover;
 		top: 0;
 		left: 0;
