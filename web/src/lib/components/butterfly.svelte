@@ -40,7 +40,6 @@ Command: npx @threlte/gltf@3.0.0 butterfly.glb --transform --types
 	let targetPerch = -1;
 	let perch = -1;
 	let position = [0, 5, -0.2] as [number, number, number];
-	let speed = 0;
 
 	function interpolatePoint(p1: Vector3, p2: Vector3, t: number, jitter: number): Vector3 {
 		const x = p1.x + (p2.x - p1.x) * t + (Math.random() - 0.5) * jitter;
@@ -126,7 +125,7 @@ Command: npx @threlte/gltf@3.0.0 butterfly.glb --transform --types
 	useTask((delta) => {
 		if (ref) {
 			const positionDiff = new Vector3(position[0], position[1], position[2]).sub(ref.position);
-			const speed = 0.05 + positionDiff.length() / delta;
+			let speed = 0.05 + positionDiff.length() / delta;
 			position = [ref?.position.x, ref?.position.y, ref?.position.z];
 
 			const wingFlapSpeed = speed * 0.4;
@@ -164,7 +163,7 @@ Command: npx @threlte/gltf@3.0.0 butterfly.glb --transform --types
 	}
 
 	function animateHoldPattern() {
-		const duration = 4;
+		const duration = 2;
 		const t = flightTime / duration;
 		if (t > 1) {
 			switchState('FlyingToPerch');
