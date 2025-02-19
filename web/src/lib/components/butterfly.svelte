@@ -33,6 +33,8 @@ Command: npx @threlte/gltf@3.0.0 butterfly.glb --transform --types
 
 	let flightPath = new CatmullRomCurve3();
 	let ref: THREE.Group | undefined;
+	let leftwing: THREE.Mesh | undefined;
+	let rightwing: THREE.Mesh | undefined;
 	let flightTime = 0;
 	let state = 'Perched';
 	let targetPerch = -1;
@@ -124,9 +126,17 @@ Command: npx @threlte/gltf@3.0.0 butterfly.glb --transform --types
 	useTask((delta) => {
 		if (ref) {
 			const positionDiff = new Vector3(position[0], position[1], position[2]).sub(ref.position);
-			const speed = positionDiff.length() / delta;
+			// const speed = positionDiff.length() / delta;
 			position = [ref?.position.x, ref?.position.y, ref?.position.z];
+
+			// const wingFlapSpeed = speed * 0.3;
+			const wingRotation = Math.abs(Math.sin(Date.now() * 0.01)) * 0.8;
+			if (leftwing && rightwing) {
+				leftwing.rotation.y = -0.42 - wingRotation;
+				rightwing.rotation.y = -0.42 - wingRotation;
+			}
 		}
+
 		flightTime += delta;
 		switch (state) {
 			case 'LeavingPerch':
@@ -183,8 +193,9 @@ Command: npx @threlte/gltf@3.0.0 butterfly.glb --transform --types
 			geometry={$gltf.nodes.Plane018.geometry}
 			position={[0, -0.01, -0.17]}
 			rotation={[-1.72, -0.42, 0.01]}
+			bind:ref={leftwing}
 		>
-			<T.MeshStandardMaterial color={0xea594e} flatShading={true} />
+			<T.MeshStandardMaterial color={0xed8d34} flatShading={true} />
 		</T.Mesh>
 		<T.Mesh
 			geometry={$gltf.nodes.Cylinder001.geometry}
@@ -192,7 +203,7 @@ Command: npx @threlte/gltf@3.0.0 butterfly.glb --transform --types
 			rotation={[-1.72, -0.01, 0]}
 			scale={1.1}
 		>
-			<T.MeshStandardMaterial color={0xafc23d} flatShading={true} />
+			<T.MeshStandardMaterial color={'black'} flatShading={true} />
 		</T.Mesh>
 		<T.Mesh
 			geometry={$gltf.nodes.Sphere002.geometry}
@@ -200,7 +211,7 @@ Command: npx @threlte/gltf@3.0.0 butterfly.glb --transform --types
 			rotation={[-1.72, -0.01, 0]}
 			scale={1.1}
 		>
-			<T.MeshStandardMaterial color={0xafc23d} flatShading={true} />
+			<T.MeshStandardMaterial color={'black'} flatShading={true} />
 		</T.Mesh>
 		<T.Mesh
 			geometry={$gltf.nodes.NurbsPath_1.geometry}
@@ -208,15 +219,16 @@ Command: npx @threlte/gltf@3.0.0 butterfly.glb --transform --types
 			rotation={[-1.72, -0.01, 0]}
 			scale={1.1}
 		>
-			<T.MeshStandardMaterial color={0xafc23d} flatShading={true} />
+			<T.MeshStandardMaterial color={'black'} flatShading={true} />
 		</T.Mesh>
 		<T.Mesh
 			geometry={$gltf.nodes.Plane021.geometry}
 			position={[0, -0.01, -0.17]}
-			rotation={[1.42, -0.41, 0]}
+			rotation={[1.42, -0.42, 0]}
 			scale={-1.1}
+			bind:ref={rightwing}
 		>
-			<T.MeshStandardMaterial color={0xea594e} flatShading={true} />
+			<T.MeshStandardMaterial color={0xed8d34} flatShading={true} />
 		</T.Mesh>
 		<T.Mesh
 			geometry={$gltf.nodes.Cylinder020_1.geometry}
@@ -224,7 +236,7 @@ Command: npx @threlte/gltf@3.0.0 butterfly.glb --transform --types
 			rotation={[-1.72, -0.01, 0]}
 			scale={1.1}
 		>
-			<T.MeshStandardMaterial color={0xafc23d} flatShading={true} />
+			<T.MeshStandardMaterial color={'black'} flatShading={true} />
 		</T.Mesh>
 	</T.Group>
 {/if}
