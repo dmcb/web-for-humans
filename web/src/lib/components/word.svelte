@@ -16,33 +16,40 @@
 
 	let { text, position, perch, shakePerch, font, delay = 0 }: Props = $props();
 
+	onReveal(() => {
+		depth.set(-500);
+	});
+
 	const raise = spring(0, {
 		stiffness: 0.05,
 		damping: 0.2
 	});
+
 	const depth = tweened(-550, {
 		delay: delay,
 		duration: 600,
 		easing: cubicOut
 	});
 
-	onReveal(() => {
-		depth.set(-500);
-	});
+	function startShake(e: Event) {
+		e.stopPropagation();
+		raise.set(1);
+		shakePerch(perch);
+	}
+
+	function stopShake(e: Event) {
+		e.stopPropagation();
+		raise.set(0);
+		shakePerch(-1);
+	}
 </script>
 
 <T.Group
 	position={[position[0], position[1], $depth + $raise]}
-	onpointerover={(e: Event) => {
-		e.stopPropagation();
-		raise.set(1);
-		shakePerch(perch);
-	}}
-	onpointerout={(e: Event) => {
-		e.stopPropagation();
-		raise.set(0);
-		shakePerch(-1);
-	}}
+	onpointerover={startShake}
+	onpointerout={stopShake}
+	ontouchstart={startShake}
+	ontouchend={stopShake}
 >
 	{#each text as [letter, offset, color], i}
 		<Letter {letter} {offset} {color} {font} />
