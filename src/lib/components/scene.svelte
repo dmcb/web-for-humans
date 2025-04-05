@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Canvas, T } from '@threlte/core';
-	import Logo from '$lib/components/logo.svelte';
+	import Logo from './logo.svelte';
 	import CustomRenderer from './customrenderer.svelte';
 </script>
 
@@ -22,7 +22,7 @@
 </Canvas>
 
 <style lang="scss">
-	:global(div) {
+	:global(main > div:first-child) {
 		position: absolute !important;
 		z-index: -1;
 		top: 0;

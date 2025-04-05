@@ -2,9 +2,8 @@
 	import { useLoader } from '@threlte/core';
 	import { Suspense, interactivity } from '@threlte/extras';
 	import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
-	import Word from '$lib/components/word.svelte';
-	import Butterfly from '$lib/components/butterfly.svelte';
-
+	import Word from './word.svelte';
+	import Butterfly from './butterfly.svelte';
 	interactivity();
 
 	const font = useLoader(FontLoader).load('/fonts/Barlow_Condensed_Bold.json');

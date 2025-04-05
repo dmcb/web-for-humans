@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Scene from '$lib/scene.svelte';
+	import Scene from '$lib/components/scene.svelte';
 </script>
 
 <svelte:head>
@@ -19,7 +19,7 @@
 	<h1>Web For Humans</h1>
 	<section class="introduction">
 		<h2>Your partner for making great things on the web.</h2>
-		<p>Website strategy, design, development and launch consulting, for humans.</p>
+		<p>Web and technology leadership, implementation and support &mdash; for humans.</p>
 		<a href="https://calendly.com/webforhumans/consultation">Book a consultation</a>
 	</section>
 </main>

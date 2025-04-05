@@ -3,7 +3,7 @@
 	import { onReveal } from '@threlte/extras';
 	import { spring, tweened } from 'svelte/motion';
 	import { cubicOut } from 'svelte/easing';
-	import Letter from '$lib/components/letter.svelte';
+	import Letter from './letter.svelte';
 
 	interface Props {
 		text: [string, number, [number, number, number]][];
