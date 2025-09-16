@@ -1,12 +1,16 @@
 <script lang="ts">
 	import Scene from '$lib/components/scene.svelte';
+	import { dev } from '$app/environment';
+	import { injectAnalytics } from '@vercel/analytics/sveltekit';
+
+	injectAnalytics({ mode: dev ? 'development' : 'production' });
 </script>
 
 <svelte:head>
 	<title>Web for Humans</title>
 	<meta
 		name="description"
-		content="Website strategy, design, development and launch consulting, for humans."
+		content="Web and technology leadership, implementation and support &mdash; for humans."
 	/>
 	<meta property="og:type" content="website" />
 	<meta property="og:image" content="https://webforhumans.solutions/webforhumans.png" />
@@ -22,9 +26,10 @@
 		<p>Web and technology leadership, implementation and support &mdash; for humans.</p>
 		<a href="https://calendly.com/webforhumans/consultation">Book a consultation</a>
 	</section>
+	<section></section>
 </main>
 
-<style lang="scss">
+<style>
 	:global(html) {
 		font-size: max(1rem, 1.33vw);
 		font-family: 'IBM Plex Sans', sans-serif;
@@ -82,12 +87,6 @@
 	p {
 		margin-top: 0;
 	}
-
-	// em {
-	// 	position: absolute;
-	// 	transform: translate(-120%, 0);
-	// 	font-size: 0.6em;
-	// }
 
 	a {
 		margin-top: 1rem;
